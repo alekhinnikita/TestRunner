@@ -14,9 +14,45 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.18" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.18" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\open-folder.png" />
+      <AvaloniaResource Include="Assets\open_folder.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\plus.png" />
+      <AvaloniaResource Include="Assets\plus.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\remove.png" />
+      <AvaloniaResource Include="Assets\remove.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\settings.png" />
+      <AvaloniaResource Include="Assets\settings.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\run_all.png" />
+      <AvaloniaResource Include="Assets\run_all.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\run_one.png" />
+      <AvaloniaResource Include="Assets\run_one.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Assets\refresh.png" />
+      <AvaloniaResource Include="Assets\refresh.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 </Project>

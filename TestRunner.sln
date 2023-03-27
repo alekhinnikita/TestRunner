@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{5ACF7C82-59B0-4AC1-8F7F-F2C90654E24F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5ACF7C82-59B0-4AC1-8F7F-F2C90654E24F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{396ABCFA-518A-42F6-870A-566D14E7632E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{91093043-3D2E-46EB-ADFC-7E8CED6709B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +18,5 @@ Global
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91093043-3D2E-46EB-ADFC-7E8CED6709B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91093043-3D2E-46EB-ADFC-7E8CED6709B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91093043-3D2E-46EB-ADFC-7E8CED6709B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91093043-3D2E-46EB-ADFC-7E8CED6709B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
