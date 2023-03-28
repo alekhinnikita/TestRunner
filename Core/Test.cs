@@ -1,13 +1,27 @@
+using ReactiveUI;
+
 namespace Services;
 
-public class Test
+public class Test : ReactiveObject
 {
     public string Name { get; set; }
     public string Body { get; set; }
     public string File { get; set; }
+    public string Path { get; set; }
 
-    public int Progress { get; set; } = 0;
+    private int progreess;
 
-    public bool Result { get; set; } = false;
+    public int Progress
+    {
+        get => progreess;
+        set => this.RaiseAndSetIfChanged(ref progreess, value);
+    }
+
+    private string result;
+    public string Result
+    {
+        get => result;
+        set => this.RaiseAndSetIfChanged(ref result, value);
+    }
     public string Progressing { get; set; } = "";
 }

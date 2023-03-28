@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using DynamicData;
 using Services;
 
 namespace Desktop;
@@ -44,7 +46,9 @@ public partial class MainWindow : Window
 
     private void AddItems_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (ItemsDataGrid.SelectedItem is Test item)
+        var items = ItemsDataGrid.SelectedItems;
+        if (items.Count == 0) return;
+        foreach (Test item in items)
         {
             if (_selectedItems.FirstOrDefault((i) => i == item) == null)
             {
@@ -55,12 +59,14 @@ public partial class MainWindow : Window
 
     private void RemoveItems_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (SelectedItemsDataGrid.SelectedItem is Test item)
+        var items = SelectedItemsDataGrid.SelectedItems;
+        if (items.Count == 0) return;
+        
+        var names = (from Test item in items select item.Name).ToList();
+        foreach (var name in names)
         {
-            if (_selectedItems.FirstOrDefault((i) => i == item) != null)
-            {
-                _selectedItems.Remove(item);
-            }
+            var item = _selectedItems.FirstOrDefault((i) => i.Name == name);
+            _selectedItems.Remove(item);
         }
     }
 
@@ -70,8 +76,11 @@ public partial class MainWindow : Window
         {
             if (_folder != null)
             {
-                await Task.Run(() => item.Result = CypressRunner.Run(item, _folder));
-                RefreshItems_OnClick(sender, e);
+                await Task.Run(() =>
+                {
+                    var result = CypressRunner.Run(item, _folder);
+                    item.Result = result ? "Пройден" : "Провален";
+                });
             }
         }
     }
@@ -79,7 +88,7 @@ public partial class MainWindow : Window
     private async void RunAllItems_OnClick(object? sender, RoutedEventArgs e)
     {
         await Task.Run(() => CypressRunner.RunAll(_selectedItems.ToList(), _folder, 3));
-        RefreshItems_OnClick(sender, e);
+        //RefreshItems_OnClick(sender, e);
     }
 
     private void RefreshItems_OnClick(object? sender, RoutedEventArgs e)

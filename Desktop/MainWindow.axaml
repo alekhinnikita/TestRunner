@@ -67,7 +67,7 @@
                         <ProgressBar Value="{Binding Path=Progress}" Minimum="0" Maximum="3"/>
                     </DataTemplate>
                 </DataGridTemplateColumn>
-                <DataGridCheckBoxColumn Header="Результат" Binding="{Binding Path=Result}"/>
+                <DataGridTextColumn Header="Результат" Binding="{Binding Path=Result}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
