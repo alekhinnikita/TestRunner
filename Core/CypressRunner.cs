@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Linq;
+using System.Text;
 
 namespace Services;
 
@@ -8,6 +9,10 @@ public class CypressRunner : Runner
 {
     public static bool Run(Test test, string directory)
     {
+
+        directory = directory.Replace("\\", "/");
+        test.File = test.File.Replace("\\", "/");
+
         var name = DateTime.Now.ToFileTimeUtc().ToString();
         var testName = test.File.Split("/").Last();
         var path = test.File.Split(testName)[0] + name + ".cy.js";
@@ -38,7 +43,9 @@ public class CypressRunner : Runner
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            process.StartInfo.FileName = "npx";
+            process.StartInfo.FileName = "powershell.exe";
+            process.StartInfo.Arguments = "/C npx " + process.StartInfo.Arguments;
+            process.StartInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
         }
 
         try
@@ -53,7 +60,16 @@ public class CypressRunner : Runner
             process.Close();
 
             File.Delete(path);
-            
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return output.Contains("✓ " + test.Name);
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return output.Contains("√ " + test.Name);
+            }
             return output.Contains("✓ " + test.Name);
         }
         catch (Exception ex)
