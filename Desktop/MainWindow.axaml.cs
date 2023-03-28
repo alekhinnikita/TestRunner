@@ -88,7 +88,6 @@ public partial class MainWindow : Window
     private async void RunAllItems_OnClick(object? sender, RoutedEventArgs e)
     {
         await Task.Run(() => CypressRunner.RunAll(_selectedItems.ToList(), _folder, 3));
-        //RefreshItems_OnClick(sender, e);
     }
 
     private void RefreshItems_OnClick(object? sender, RoutedEventArgs e)

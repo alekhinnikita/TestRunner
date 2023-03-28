@@ -53,22 +53,8 @@ public class CypressRunner : Runner
             process.Close();
 
             File.Delete(path);
-            if (output.Contains("✓ " + test.Name))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            // if (output.Contains("failed"))
-            // {
-            //     File.Delete(path);
-            //     return false;
-            // }
-            //
-            // File.Delete(path);
-            // return true;
+            
+            return output.Contains("✓ " + test.Name);
         }
         catch (Exception ex)
         {
@@ -90,6 +76,7 @@ public class CypressRunner : Runner
         }
     }
 
+    //run all test in one run
     public static async void RunMany(List<Test> tests, string directory)
     {
         foreach (var test in tests)
@@ -97,16 +84,17 @@ public class CypressRunner : Runner
             var name = DateTime.Now.ToFileTimeUtc().ToString();
             var testName = test.File.Split("/").Last();
             var path = test.File.Split(testName)[0] + name + ".cy.js";
-            
-            File.WriteAllText(path, test.Body);
+
+            //File.WriteAllText(path, test.Body);
             test.Path = path;
         }
 
-        var paths = tests.Select((test) => test.Path).Aggregate((a, b) => a + "," + "b");
+        var paths = tests.Select((test) => test.Path).Aggregate((a, b) =>
+            a.Split(directory)[1].Substring(1) + "," + b.Split(directory)[1].Substring(1));
         int a = 5;
         foreach (var s in tests.Select((test) => test.Path))
         {
-            File.Delete(s);
+            //File.Delete(s);
         }
     }
 }
