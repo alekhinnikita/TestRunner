@@ -17,6 +17,8 @@ public partial class MainWindow : Window
     private readonly ObservableCollection<Test> _items = new ObservableCollection<Test>();
     private readonly ObservableCollection<Test> _selectedItems = new ObservableCollection<Test>();
     private string? _folder;
+    private DesktopContext _context = new DesktopContext();
+    private Models.Template? _template = null;
 
     public MainWindow()
     {
@@ -40,6 +42,13 @@ public partial class MainWindow : Window
             _items.Clear();
             _items.AddRange(_tests);
         }
+    }
+
+    private void ConfigurationMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var dialog = new Dialogs.SettingDialogWindow();
+        dialog._mainWindow = this;
+        dialog.Show();
     }
 
     private void AddItems_OnClick(object? sender, RoutedEventArgs e)
@@ -77,6 +86,7 @@ public partial class MainWindow : Window
                        {
                            var result = CypressRunner.Run(item, _folder);
                            item.Result = result ? "Пройден" : "Провален";
+                           SaveResult(item);
                        });
         }
     }
@@ -84,7 +94,12 @@ public partial class MainWindow : Window
     private async void RunAllItems_OnClick(object? sender, RoutedEventArgs e)
     {
         if (_folder == null) return;
-        await Task.Run(() => CypressRunner.RunAll(_selectedItems.ToList(), _folder, 3));
+        await Task.Run(() => 
+            {
+                var result = CypressRunner.RunAll(_selectedItems.ToList(), _folder, 3);
+                _selectedItems.ToList().ForEach((test) => SaveResult(test));
+            }
+        );
     }
 
     private void RefreshItems_OnClick(object? sender, RoutedEventArgs e)
@@ -103,5 +118,36 @@ public partial class MainWindow : Window
                 test.Name.Contains(SearchBox.Text) ||
                 test.File.Contains(SearchBox.Text))
             .ToList().ForEach((test) => _items.Add(test));
+    }
+
+    private void SaveResult(Test test)
+    {
+        var result = new Models.RunResult
+        {
+            Name = test.Name,
+            File = test.File,
+            Log = test.Progressing,
+        };
+        if(test.Result == "Пройден")
+        {
+            result.Success = true;
+        }
+        _context.RunResults.Add(result);
+        _context.SaveChanges();
+    }
+
+    public void ChangeSettings(string address = "", string login = "", string password = "", string project = "")
+    {
+        if (_template == null)
+        {
+            _template = _context.Templates.Add(new Models.Template()).Entity;
+            _context.SaveChanges();
+        }
+        _template.Address = address;
+        _template.Login = login;
+        _template.Password = password;
+        _template.Project = project;
+        _context.Templates.Update(_template);
+        _context.SaveChanges();
     }
 }

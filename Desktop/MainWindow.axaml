@@ -28,7 +28,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
-            <Button Name="ConfigurationMenuItem">
+            <Button Name="ConfigurationMenuItem" Click="ConfigurationMenuItem_OnClick">
                <Image Source="Assets/settings.png"/>
             </Button>
             <Button Name="OpenFolderMenuItem" Click="OpenFolderMenuItem_OnClick">

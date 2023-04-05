@@ -77,7 +77,7 @@ public class CypressRunner : Runner
         }
     }
 
-    public static async void RunAll(List<Test> tests, string directory, int workers)
+    public static async Task<bool> RunAll(List<Test> tests, string directory, int workers)
     {
         foreach (var test in tests)
         {
@@ -88,6 +88,7 @@ public class CypressRunner : Runner
                 else test.Result = "Провален";
             });
         }
+        return true;
     }
 
     //run all test in one run

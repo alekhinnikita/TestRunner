@@ -7,5 +7,5 @@ public interface Runner
         return false;
     }
     
-    public static void RunAll(IEnumerable<Test> tests, int workers) {}
+    public static bool RunAll(IEnumerable<Test> tests, int workers) { return false; }
 }
