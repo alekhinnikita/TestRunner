@@ -86,9 +86,8 @@ public class CypressRunner : Runner
         {
             await Task.Run(() =>
             {
-                bool res = Run(test, directory);
-                if (res) test.Result = "Пройден";
-                else test.Result = "Провален";
+                var res = Run(test, directory);
+                test.Result = res ? "Пройден" : "Провален";
             });
         }
         return true;
@@ -98,12 +97,9 @@ public class CypressRunner : Runner
     {
         Parallel.ForEach(tests, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, test =>
         {
-            Run(test, directory);
+            var res = Run(test, directory);
+            test.Result = res ? "Пройден" : "Провален";
         });
-
-        //var actions = new List<Action>();
-        //tests.ForEach((test) => actions.Add(() => Run(test, directory)));
-        //Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = threadCount }, actions.ToArray());
 
         return true;
     }
