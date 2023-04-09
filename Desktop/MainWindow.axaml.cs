@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Desktop.Models;
 using DynamicData;
 using Services;
 
@@ -13,12 +14,12 @@ namespace Desktop;
 
 public partial class MainWindow : Window
 {
-    private List<Test> _tests = new List<Test>();
-    private readonly ObservableCollection<Test> _items = new ObservableCollection<Test>();
-    private readonly ObservableCollection<Test> _selectedItems = new ObservableCollection<Test>();
+    private List<Test> _tests = new ();
+    private readonly ObservableCollection<Test> _items = new ();
+    private readonly ObservableCollection<Test> _selectedItems = new ();
     private string? _folder;
-    private DesktopContext _context = new DesktopContext();
-    private Models.Template? _template = null;
+    private readonly DesktopContext _context = new ();
+    private Models.Template Setting = new ();
 
     public MainWindow()
     {
@@ -94,12 +95,11 @@ public partial class MainWindow : Window
     private async void RunAllItems_OnClick(object? sender, RoutedEventArgs e)
     {
         if (_folder == null) return;
-        await Task.Run(() => 
-            {
-                var result = CypressRunner.RunAll(_selectedItems.ToList(), _folder, 3);
-                _selectedItems.ToList().ForEach((test) => SaveResult(test));
-            }
-        );
+        await Task.Run(() =>
+        {
+            var result = CypressRunner.RunAllParallel(_selectedItems.ToList(), _folder, 4);
+            _selectedItems.ToList().ForEach((test) => SaveResult(test));
+        });
     }
 
     private void RefreshItems_OnClick(object? sender, RoutedEventArgs e)
@@ -138,16 +138,16 @@ public partial class MainWindow : Window
 
     public void ChangeSettings(string address = "", string login = "", string password = "", string project = "")
     {
-        if (_template == null)
+        if (Setting == null)
         {
-            _template = _context.Templates.Add(new Models.Template()).Entity;
+            Setting = _context.Templates.Add(new Models.Template()).Entity;
             _context.SaveChanges();
         }
-        _template.Address = address;
-        _template.Login = login;
-        _template.Password = password;
-        _template.Project = project;
-        _context.Templates.Update(_template);
+        Setting.Address = address;
+        Setting.Login = login;
+        Setting.Password = password;
+        Setting.Project = project;
+        _context.Templates.Update(Setting);
         _context.SaveChanges();
     }
 }

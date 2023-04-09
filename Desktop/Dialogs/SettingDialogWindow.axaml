@@ -2,28 +2,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
         x:Class="Desktop.Dialogs.SettingDialogWindow"
         Title="SettingDialogWindow"
 		TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True">
-	<StackPanel Orientation="Vertical">
-		<StackPanel Orientation="Horizontal">
-			<Label Content="Адрес"/>
-			<TextBox Name="AddressBox"/>
+        ExtendClientAreaToDecorationsHint="True"
+		Height="260" Width="250">
+	<StackPanel Orientation="Vertical" Margin="20">
+		<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+			<Label Content="Адрес" Width="60"/>
+			<TextBox Name="AddressBox" Width="150"/>
 		</StackPanel>
-		<StackPanel Orientation="Horizontal">
-			<Label Content="Логин"/>
-			<TextBox Name="LoginBox"/>
+		<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+			<Label Content="Логин" Width="60"/>
+			<TextBox Name="LoginBox" Width="150"/>
 		</StackPanel>
-		<StackPanel Orientation="Horizontal">
-			<Label Content="Пароль"/>
-			<TextBox Name="PasswordBox"/>
+		<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+			<Label Content="Пароль" Width="60"/>
+			<TextBox Name="PasswordBox" Width="150"/>
 		</StackPanel>
-		<StackPanel Orientation="Horizontal">
-			<Label Content="Проект"/>
-			<TextBox Name="ProjectBox"/>
+		<StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+			<Label Content="Проект" Width="60"/>
+			<TextBox Name="ProjectBox" Width="150"/>
 		</StackPanel>
-		<Button Content="Сохранить" Click="Button_OnClick"/>
+		<Button Content="Сохранить" Click="Button_OnClick" Width="210" Margin="0 10 0 0"/>
 	</StackPanel>
 </Window>

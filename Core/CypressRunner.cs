@@ -1,5 +1,7 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Services;
 
@@ -11,7 +13,7 @@ public class CypressRunner : Runner
         directory = directory.Replace("\\", "/");
         test.File = test.File.Replace("\\", "/");
 
-        var name = DateTime.Now.ToFileTimeUtc().ToString();
+        var name = DateTime.Now.ToFileTimeUtc().ToString() + DateTime.Now.Microsecond;
         var testName = test.File.Split("/").Last();
         var path = test.File.Split(testName)[0] + name + ".cy.js";
 
@@ -56,6 +58,7 @@ public class CypressRunner : Runner
             process.WaitForExit();
             test.Progress = 3;
             process.Close();
+            test.OnRan();
 
             File.Delete(path);
 
@@ -77,7 +80,7 @@ public class CypressRunner : Runner
         }
     }
 
-    public static async Task<bool> RunAll(List<Test> tests, string directory, int workers)
+    public static async Task<bool> RunAll(List<Test> tests, string directory)
     {
         foreach (var test in tests)
         {
@@ -91,25 +94,17 @@ public class CypressRunner : Runner
         return true;
     }
 
-    //run all test in one run
-    public static async void RunMany(List<Test> tests, string directory)
+    public static bool RunAllParallel(List<Test> tests, string directory, int threadCount) 
     {
-        foreach (var test in tests)
+        Parallel.ForEach(tests, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, test =>
         {
-            var name = DateTime.Now.ToFileTimeUtc().ToString();
-            var testName = test.File.Split("/").Last();
-            var path = test.File.Split(testName)[0] + name + ".cy.js";
+            Run(test, directory);
+        });
 
-            //File.WriteAllText(path, test.Body);
-            test.Path = path;
-        }
+        //var actions = new List<Action>();
+        //tests.ForEach((test) => actions.Add(() => Run(test, directory)));
+        //Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = threadCount }, actions.ToArray());
 
-        var paths = tests.Select((test) => test.Path).Aggregate((a, b) =>
-            a.Split(directory)[1].Substring(1) + "," + b.Split(directory)[1].Substring(1));
-        int a = 5;
-        foreach (var s in tests.Select((test) => test.Path))
-        {
-            //File.Delete(s);
-        }
+        return true;
     }
 }

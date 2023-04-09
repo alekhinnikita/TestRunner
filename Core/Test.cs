@@ -24,4 +24,6 @@ public class Test : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref result, value);
     }
     public string Progressing { get; set; } = "";
+
+    public Action OnRan { get; set; } = () => { };
 }
