@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5ACF7C82-59B0-4AC1-8F7F-F2C90654E24F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{5ACF7C82-59B0-4AC1-8F7F-F2C90654E24F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{396ABCFA-518A-42F6-870A-566D14E7632E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desktop", "Desktop\Desktop.csproj", "{396ABCFA-518A-42F6-870A-566D14E7632E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopWindowsClient", "DesktopWindowsClient\DesktopWindowsClient.csproj", "{26880A73-468B-4E1D-A499-31A8732B1E7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{396ABCFA-518A-42F6-870A-566D14E7632E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26880A73-468B-4E1D-A499-31A8732B1E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26880A73-468B-4E1D-A499-31A8732B1E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26880A73-468B-4E1D-A499-31A8732B1E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26880A73-468B-4E1D-A499-31A8732B1E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {347CF18C-6404-48E0-B42B-280381E8CECB}
 	EndGlobalSection
 EndGlobal

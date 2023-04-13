@@ -34,6 +34,7 @@
             <Button Name="OpenFolderMenuItem" Click="OpenFolderMenuItem_OnClick">
                 <Image Source="Assets/open_folder.png"/>
             </Button>
+			<Button Name="HistoryMenuItem" Width="120" Content="История запуска тестов" Click="HistoryMenuItem_OnClick"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
             <Button Name="RefreshItems" Click="RefreshItems_OnClick">
@@ -51,6 +52,9 @@
             <Button Name="RunAllItems" Click="RunAllItems_OnClick">
                 <Image Source="Assets/run_all.png"/>
             </Button>
+			<Button Name="CreateReportButton" Click="CreateReport_OnClick">
+				<Image Source="Assets/report.png"/>
+			</Button>
         </StackPanel>
         <TextBox Name="SearchBox" Grid.Row="1" Grid.Column="0" Watermark="Поиск" KeyUp="SearchBox_OnKeyUp"/>
         <DataGrid Name="ItemsDataGrid" Grid.Row="2" Grid.Column="0" CanUserResizeColumns="True">

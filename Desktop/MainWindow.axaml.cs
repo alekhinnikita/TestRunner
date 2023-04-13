@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Desktop.Models;
@@ -49,6 +51,11 @@ public partial class MainWindow : Window
     {
         var dialog = new Dialogs.SettingDialogWindow();
         dialog._mainWindow = this;
+        dialog.Show();
+    }
+    private async void HistoryMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var dialog = new Dialogs.RunHIstoryWindow();
         dialog.Show();
     }
 
@@ -149,5 +156,47 @@ public partial class MainWindow : Window
         Setting.Project = project;
         _context.Templates.Update(Setting);
         _context.SaveChanges();
+    }
+    private async void CreateReport_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var items = ItemsDataGrid.SelectedItems;
+        if (items.Count == 0) return;
+        var body = @"
+        <html>
+            <head>
+                <style type=""text/css"">
+                table, td {
+                  border-collapse: collapse;
+                  border: 1px solid;
+                }
+                </style>
+            </head>
+            <body>
+                <table>
+                <tr><td>Название</td><td>Файл</td><td>Результат</td></tr>
+        ";
+        
+        foreach (Test item in items)
+        {
+            var line = "<tr>";
+            line += "<td>" + item.Name + "</td>";
+            line += "<td>" + item.File.Split(_folder.Replace("\\", "/"))[1] + "</td>";
+            line += "<td>" + item.Result + "</td>";
+            line += "</tr>";
+
+            body += "\n" + line;
+        }
+
+        body += "\n" + "<p>Дата: " + DateTime.Now.ToString("dd.MM.yyyy") + "</p>";
+        body += "\n" + "<p>URL: " + Setting.Address + "</p>";
+        body += "\n" + "<p>Логин: " + Setting.Login + "</p>";
+        body += "\n" + "<p>Пароль: " + Setting.Password + "</p>";
+
+        body += "</table></body></html>";
+
+        var sfd = new SaveFileDialog();
+        sfd.DefaultExtension = "html";
+        var file = await sfd.ShowAsync(this);
+        File.WriteAllText(file, body);
     }
 }

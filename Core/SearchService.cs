@@ -26,6 +26,28 @@ public class SearchService
         return result;
     }
 
+    public static IEnumerable<string> FindTestFiles(DirectoryInfo directory)
+    {
+        var result = new List<string>();
+
+        var files = directory.GetFiles("*", SearchOption.AllDirectories)
+                .Select((f) => f.FullName)
+                .Where((l) => l.Contains("node_modules") == false);
+
+        foreach (var file in files)
+        {
+            foreach (var extension in Extensions)
+            {
+                if (file.Contains(extension))
+                {
+                    result.Add(file);
+                }
+            }
+        }
+
+        return result;
+    }
+
     public static IEnumerable<Test> GetTests(IEnumerable<string> files)
     {
         var tests = new List<Test>();
@@ -53,8 +75,9 @@ public class SearchService
         return tests;
     }
 
-    public static IEnumerable<Test> GetTests(string text, string file)
+    public static IEnumerable<Test> GetTests(string file)
     {
+        var text = File.ReadAllText(file);
         text = text.Replace("\r", "\n").Replace("\n", "\r\n");
         var tests = new List<Test>();
 

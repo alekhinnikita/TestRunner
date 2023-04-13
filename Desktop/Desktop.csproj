@@ -24,7 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Assets\list.png" />
       <None Remove="Assets\open-folder.png" />
+      <None Remove="Assets\report.png" />
       <AvaloniaResource Include="Assets\open_folder.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
@@ -37,6 +39,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
       <None Remove="Assets\settings.png" />
+      <AvaloniaResource Include="Assets\report.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
       <AvaloniaResource Include="Assets\settings.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AvaloniaResource>
@@ -56,5 +61,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationDefinition Include="Assets\list.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </ApplicationDefinition>
     </ItemGroup>
 </Project>

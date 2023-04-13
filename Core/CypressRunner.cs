@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -9,7 +10,6 @@ public class CypressRunner : Runner
 {
     public static bool Run(Test test, string directory)
     {
-
         directory = directory.Replace("\\", "/");
         test.File = test.File.Replace("\\", "/");
 
@@ -19,6 +19,32 @@ public class CypressRunner : Runner
 
         File.WriteAllText(path, test.Body);
 
+        var process = InitCypressProcess(path, directory);
+        try
+        {
+            process.Start();
+            test.Result = "";
+            test.Progress = 2;
+            var output = process.StandardOutput.ReadToEnd();
+            test.Progressing = output;
+            process.WaitForExit();
+            test.Progress = 3;
+            process.Close();
+            test.OnRan();
+
+            File.Delete(path);
+
+            return GetResult(test, output);
+        }
+        catch (Exception ex)
+        {
+            File.Delete(path);
+            return false;
+        }
+    }
+
+    private static Process InitCypressProcess(string path, string directory)
+    {
         var process = new Process()
         {
             StartInfo =
@@ -48,36 +74,21 @@ public class CypressRunner : Runner
             process.StartInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
         }
 
-        try
+        return process;
+    }
+
+    private static bool GetResult(Test test, string output)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            process.Start();
-            test.Result = "";
-            test.Progress = 2;
-            var output = process.StandardOutput.ReadToEnd();
-            test.Progressing = output;
-            process.WaitForExit();
-            test.Progress = 3;
-            process.Close();
-            test.OnRan();
-
-            File.Delete(path);
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return output.Contains("✓ " + test.Name);
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return output.Contains("√ " + test.Name);
-            }
             return output.Contains("✓ " + test.Name);
         }
-        catch (Exception ex)
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            File.Delete(path);
-            return false;
+            return output.Contains("√ " + test.Name);
         }
+        return output.Contains("✓ " + test.Name);
     }
 
     public static async Task<bool> RunAll(List<Test> tests, string directory)
@@ -98,12 +109,10 @@ public class CypressRunner : Runner
     {
         Parallel.ForEach(tests, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, test =>
         {
-            Run(test, directory);
+            bool res = Run(test, directory);
+            if (res) test.Result = "Пройден";
+            else test.Result = "Провален";
         });
-
-        //var actions = new List<Action>();
-        //tests.ForEach((test) => actions.Add(() => Run(test, directory)));
-        //Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = threadCount }, actions.ToArray());
 
         return true;
     }
