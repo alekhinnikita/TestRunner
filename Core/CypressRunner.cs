@@ -1,8 +1,6 @@
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Services;
 
@@ -97,9 +95,8 @@ public class CypressRunner : Runner
         {
             await Task.Run(() =>
             {
-                bool res = Run(test, directory);
-                if (res) test.Result = "Пройден";
-                else test.Result = "Провален";
+                var res = Run(test, directory);
+                test.Result = res ? "Пройден" : "Провален";
             });
         }
         return true;
