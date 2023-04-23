@@ -157,6 +157,41 @@ public partial class MainWindow : Window
         _context.Templates.Update(Setting);
         _context.SaveChanges();
     }
+
+    private string ChangeConfig(string url = "", string login = "", string password = "")
+    {
+        var text = File.ReadAllText(_folder);
+        if (url != "")
+        {
+            var line = text.Split("\n").FirstOrDefault((l) => l.Contains("url:"));
+            if(line != null)
+            {
+                var newLine = "url: '" + url + "',";
+                text.Replace(line, newLine);
+            }
+        }
+        if (login != "")
+        {
+            var line = text.Split("\n").FirstOrDefault((l) => l.Contains("login:"));
+            if (line != null)
+            {
+                var newLine = "login: '" + login + "',";
+                text.Replace(line, newLine);
+            }
+        }
+        if (password != "")
+        {
+            var line = text.Split("\n").FirstOrDefault((l) => l.Contains("password:"));
+            if (line != null)
+            {
+                var newLine = "password: '" + password + "',";
+                text.Replace(line, newLine);
+            }
+        }
+
+        return text;
+    }
+
     private async void CreateReport_OnClick(object? sender, RoutedEventArgs e)
     {
         var items = ItemsDataGrid.SelectedItems;
